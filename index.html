@@ -1,81 +1,828 @@
 <!doctype html>
 <html lang="en">
 
-    <head>
-        <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8">
 
-        <title>Functional JavaScript & Underscore.js</title>
+    <title>Functional JavaScript & Underscore.js</title>
 
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        <link rel="stylesheet" href="bower_components/reveal.js/css/reveal.min.css">
-        <link rel="stylesheet" href="bower_components/reveal.js/css/theme/default.css" id="theme">
+    <link rel="stylesheet" href="bower_components/reveal.js/css/reveal.min.css">
+    <link rel="stylesheet" href="bower_components/reveal.js/css/theme/default.css" id="theme">
 
-        <!-- For syntax highlighting -->
-        <link rel="stylesheet" href="bower_components/reveal.js/lib/css/zenburn.css" id="highlight-theme">
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="bower_components/reveal.js/lib/css/zenburn.css" id="highlight-theme">
 
-        <!-- If the query includes 'print-pdf', use the PDF print sheet -->
-        <script>
-          document.write( '<link rel="stylesheet" href="bower_components/reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
-        </script>
+    <style type="text/css">
+      /* Override some of the default styles */
+      body { background: #2b2b2b; filter: none; }
+      .reveal { font-family: "Open Sans", "Lato", sans; letter-spacing: 0.01em;}
+      .reveal h1, .reveal h2, .reveal h3, .reveal h4,
+      .reveal h5, .reveal h6 {
+        text-shadow: none;
+        text-transform: none;
+        font-family: "Elena Web Basic Regular", "Georgia", serif;
+      }
+      .reveal blockquote {
+        width: 100%;
+        font-style: normal;
+      }
+      ::selection {
+        color: white;
+        background: lightblue;
+        text-shadow: none;
+      }
 
-        <!--[if lt IE 9]>
-        <script src="lib/js/html5shiv.js"></script>
-        <![endif]-->
-    </head>
+    </style>
 
-    <body>
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write( '<link rel="stylesheet" href="bower_components/reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
 
-        <div class="reveal">
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+       </head>
 
-            <div class="slides">
+  <body>
+    <div class="reveal">
 
-                
-                    
-                        
-                            <section data-markdown="slides/index.md"></section>
-                        
-                    
-                
+<div class="slides">
 
-            </div>
+<section>
+<section>
+  <h1>Functional JavaScript & Underscore.js</h1>
+  <h6>20 October 2013, MumbaiJS Meet</h6>
+  <h3><a href="http://ankitsolanki.com">Ankit Solanki</a> &mdash; <a href="https://twitter.com/_anks">@_anks</a></h3>
+  <h3><a href="http://nthloop.com">nth loop</a>, <a href="https://cleartax.in">ClearTax</a></h3>
+</section>
 
-        </div>
+<section>
+  <h3>Keybindings</h3>
+  <h6>Use <code>Space</code>, <code>Shift-Space</code> to navigate slides</h6>
+  <h6>Focus on code blocks to edit them</h6>
+  <h6><code>Ctrl-C</code> &mdash; Copy current slide’s code to clipboard</h6>
+  <h6><code>Ctrl-E</code> &mdash; Execute current slide’s code</h6>
+  <h6><code>Ctrl-Z</code> &mdash; Remove local modifications from current slide</h6>
+</section>
+</section>
 
-        <script src="bower_components/reveal.js/lib/js/head.min.js"></script>
-        <script src="bower_components/reveal.js/js/reveal.min.js"></script>
-        <script>
-            // Configure Reveal
-            // Full list of configuration options available here:
-            // https://github.com/hakimel/reveal.js#configuration
-            Reveal.initialize({
-                controls: true,
-                progress: true,
-                history: true,
-                center: true,
+<section>
+<section data-markdown>
+## A Quick Outline
+### 1. What is FP and why it matters
+### 2. Functions in JavaScript
+### 3. Underscore.js
+</section>
 
-                theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-                transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+<section data-markdown>
+### We will skip
+#### 1. Function contexts & _this_
+#### 2. Prototypes & Inheritance
+#### 3. Closures & Recursion
 
-                // Optional libraries used to extend on reveal.js
-                dependencies: [
-                    { src: 'bower_components/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-                    { src: 'bower_components/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-                    { src: 'bower_components/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-                    { src: 'bower_components/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-                    { src: 'bower_components/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-                    { src: 'bower_components/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
-                    // { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
-                    //{ src: 'bower_components/reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+#### (maybe next time?)
+</section>
+</section>
 
-                    { src: 'js/loadhtmlslides.js', condition: function() { return !!document.querySelector( '[data-html]' ); } }
-                ]
-            });
-        </script>
+<section>
+<section data-markdown>
+# What is Functional Programming?
+</section>
 
-    </body>
+<section data-markdown>
+### [Wikipedia](https://en.wikipedia.org/wiki/Functional_programming) says
+
+> Functional Programming is a programming paradigm that treats computation as the evaluation of mathematical functions and avoids state and mutable data.
+
+> Functional programming emphasizes functions that produce results that depend only on their inputs and not on the program state - i.e. pure mathematical functions.
+</section>
+
+<section data-markdown>
+### Functions in the mathematical sense
+### That just transform _Inputs_ to _Outputs_
+
+    f(x) = 2x + 1;
+    f(2) => 5
+</section>
+
+<section data-markdown>
+### Pure Functions, No Side Effects
+    // Impure! Changes global state
+    var total = 0;
+    function increment() {
+      total++;
+    }
+
+    // Impure! Manipulates DOM
+    function summarize(sumamry) {
+      $('.summary').html(summary);
+    }
+
+    // Pure
+    function add(a, b) {
+      return a + b;
+    }
+</section>
+
+<section data-markdown>
+### Higher-order functions
+
+##### Functions that manipulate other functions
+##### Functions that have other functions as arguments
+##### Functions that return functions
+
+### These help us emulate control flow
+</section>
+
+<section data-markdown>
+### Thinking in Data Structures & manipulating them
+##### JS has Arrays and Dictionaries (objects), so that’s what we concentrate on
+</section>
+</section>
+
+<section>
+<section data-markdown>
+# Why does FP matter?
+</section>
+
+<section data-markdown>
+### Don’t Repeat Yourself
+### Use a Richer Means Of Expression
+### Prevent Bugs
+### Make Things Simple
+</section>
+
+<section data-markdown>
+## Simple does not mean Easy
+</section>
+
+<section>
+<h4>Given a list of scores, find out how many students passed</h4>
+<pre><code data-trim>
+var scores = [5, 31, 8, 36, 13, 19, 32, 11, 44, 28],
+    passGrade = 20, totalPassed = 0;
+
+for (var i = 0; i < scores.length; i++) {
+  if (scores[i] >= passGrade) {
+    totalPassed++;
+  }
+}
+
+console.log(totalPassed); // => 5
+
+// The functional way
+function passes(score) {
+  return score > passGrade;
+}
+totalPassed = _.filter(scores, passes).length;
+console.log(totalPassed); // => 5
+</code>
+</pre>
+</section>
+
+<section data-markdown>
+### Conceptual Simplicity
+### Peace of Mind
+### Composability
+### Separation of Concerns
+</section>
+
+<section data-markdown>
+## Benefits add up as your code gets more complex
+</section>
+
+<section>
+<pre><code data-trim>
+// Per student, PCM grades. They fail if any grade is below passing
+var scores = [ [24,38,29], [41,5,7], [24,42,27],
+               [17,37,14], [8,15,43]];
+var passGrade = 20, totalPassed = 0;
+
+for (var i = 0; i < scores.length; i++) {
+  var passes = true;
+  for (var j = 0; j < scores[i].length; j++) {
+    if (scores[i][j] < passGrade) {
+      passes = false;
+      break;
+    }
+  }
+  if (passes) { totalPassed++; }
+}
+
+console.log(totalPassed); // => 2
+</code></pre>
+</section>
+
+<section>
+<pre><code data-trim>
+// Per student, PCM grades. They fail if any grade is below passing
+var scores = [ [24,38,29], [41,5,7], [24,42,27],
+               [17,37,14], [8,15,43]];
+var passGrade = 20, totalPassed = 0;
+
+function clearsSubject(score) {
+  return score > passGrade;
+}
+
+function studentPasses(allScores) {
+  return _.all(allScores, clearsSubject);
+}
+
+totalPassed = _.filter(scores, studentPasses).length;
+console.log(totalPassed); // => 2
+</code>
+</pre>
+</section>
+
+<section data-markdown>
+### Any time you find yourself writing a loop twice, write a function instead.
+</section>
+
+<section data-markdown>
+### And, nested loops are __evil__.
+</section>
+</section>
+
+<section data-background="#3ac">
+<h2>
+  <code>&lt;/end-theory&gt;</code>
+  <br><br>
+  <code>&lt;start-code&gt;</code>
+</h2>
+</section>
+
+<section>
+<section data-markdown>
+# Functions in JavaScript
+## A super quick walkthrough
+</section>
+
+<section data-markdown>
+## Functions are first-class values in JavaScript
+
+    // Functions are expressions, and can be on the RHS.
+    // They can be assigned to variables.
+    var hello = function (name) { console.log('Hello ' + name); };
+
+    // and then invoked.
+    hello('Someone'); // => 'Hello Someone'
+
+    // They can be re-assigned too.
+    var anotherHello = hello;
+    anotherHello('Anyone?'); // => 'Hello Anyone?'
+
+</section>
+
+<section data-markdown>
+## Functions are first-class values in JavaScript
+
+    // Functions can be passed as arguments to other functions.
+    // You all must be familiar with this already :)
+
+    var disableClick = function () { return false; }
+
+    $('body').on('click', disableClick);
+</section>
+
+<section data-markdown>
+## Functions are first-class values in JavaScript
+
+    // Functions can return functions too
+    var makeGradeChecker = function (passGrade) {
+      return function (grade) {
+        return grade >= passGrade;
+      };
+    };
+
+    var passes20 = makeGradeChecker(20);
+    console.log(passes20(25)); // => true
+    console.log(passes20(15)); // => false
+
+    var passes30 = makeGradeChecker(30);
+    console.log(passes30(25)); // => false
+    console.log(passes30(35)); // => true
+
+</section>
+
+<section data-markdown>
+## Functions are just another datatype
+
+    var counters = [
+      function () { return 1; },
+      function () { return 2; },
+      function () { return 3; }
+    ];
+
+    console.log(counters[0]()); // => 1
+
+    var Mathematics = {
+      add: function (a, b) { return a + b; },
+      mul: function (a, b) { return a * b; }
+    };
+
+    console.log(Mathematics.add(5, -3)); // => 2
+</section>
+
+<section data-markdown>
+## Arguments
+
+    var count = function () { return arguments.length; };
+    console.log(count(1, 2, 3, 4)); // => 4
+    console.log(count('a', 'b')); // => 2
+
+</section>
+<section data-markdown>
+## Function-scoped Variables
+
+Can anyone guess what this will output?
+
+    var index = 5;
+
+    console.log('before: ', index);
+    // Immediately-Invoked Function Expression
+    (function () {
+      console.log('begin: ', index);
+      var index = 10;
+      console.log('end: ', index);
+    })();
+
+    console.log('after: ', index);
+
+What happens if you remove the _var_ keyword?
+</section>
+</section>
+
+<section>
+<section data-markdown>
+# Functional Building Blocks
+### Map, Filter, Reduce
+</section>
+
+<section data-markdown>
+## Map
+
+    var map = function(inputArray, func) {
+      var outputArray = [];
+
+      for (var i = 0; i < inputArray.length; i++) {
+        outputArray.push(func(inputArray[i]));
+      }
+
+      return outputArray;
+    };
+
+    // Usage
+    var numbers = [1, 2, 3, 4, 5];
+    var squarer = function (x) { return x * x; };
+    console.log(map(numbers, squarer)); // => [1, 4, 9, 16, 25]
+
+</section>
+
+<section data-markdown>
+## Filter
+
+    var filter = function(inputArray, func) {
+      var outputArray = [];
+
+      for (var i = 0; i < inputArray.length; i++) {
+        if (func(inputArray[i])) {
+          outputArray.push(inputArray[i]);
+        }
+      }
+
+      return outputArray;
+    };
+
+    // Usage
+    var numbers = [1, 2, 3, 4, 5];
+    var isEven = function (x) { return x % 2 == 0; };
+    console.log(filter(numbers, isEven)); // => [2, 4]
+
+</section>
+
+<section data-markdown>
+## Reduce
+
+    var reduce = function(inputArray, func, startValue) {
+      var output = startValue;
+
+      for (var i = 0; i < inputArray.length; i++) {
+        output = func(output, inputArray[i]);
+      }
+
+      return output;
+    };
+
+    // Usage
+    var numbers = [1, 2, 3, 4, 5];
+    var add = function (a, b) { return a + b; };
+    console.log(reduce(numbers, add, 0)); // => 15
+
+</section>
+
+<section data-markdown>
+## Reduce
+
+    var reduce = function(inputArray, func, startValue) {
+      var output = startValue;
+
+      for (var i = 0; i < inputArray.length; i++)
+        output = func(output, inputArray[i]);
+
+      return output;
+    };
+
+    reduce([1,2,3,4,5], add, 0);       // Step-by-step
+    //  output = 0                        initialize
+    //   [1]: output = add(0,  1) = 1     itereate
+    //   [2]: output = add(1,  2) = 3     iterate
+    //   [3]: output = add(3,  3) = 6     iterate
+    //   [4]: output = add(6,  4) = 10    iterate
+    //   [5]: output = add(10, 5) = 15    iterate
+    //  => 15                             return
+
+</section>
+
+<section data-markdown>
+## Reduce
+    // Flatten a list
+    var flattener = function (outputList, item) {
+      return outputList.concat(item);
+    }
+    console.log(reduce([[1, 2, 3], [6,7,8]], flattener, []));
+    // => [1, 2, 3, 6, 7, 8]
+
+    // Find the maximum value
+    var max = function (a, b) { return a > b ? a : b; };
+    var numbers = [4, 5, 1, -5];
+    console.log(reduce(numbers, max, numbers[0])); // => 5
+</section>
+</section>
+
+<section>
+<section data-markdown data-background="#398">
+# Underscore.js
+</section>
+
+<section data-markdown>
+## [Underscore.js](http://documentcloud.github.io/underscore/)
+- It’s a utility-belt library.
+- Very general purpose, but often a must-have.
+- Does not deal with DOM. Just data.
+- [Single file](http://documentcloud.github.io/underscore/underscore.js), completely [readable code](http://documentcloud.github.io/underscore/docs/underscore.html).
+- 5kb, minified and gzipped.
+
+</section>
+
+<section data-markdown>
+### Three main categories of functions
+- Functions that work on arrays and array like objects
+  - (Mostly specializations of map, reduce & filter)
+- Functions that work on other Functions
+- Functions that work on objects
+</section>
+
+<section data-markdown>
+
+### General Usage
+
+    // Input is typically an array or an object
+    var output = _.function(input, iterator);
+
+    // The iterator typically takes arguments in this order
+    var iterator = function(value, index, array) { };
+
+</section>
+
+<section data-markdown>
+
+### Chaining
+
+##### jQuery-like function chaining, for readability
+
+    var numbers = [1, 2, 3];
+    var sq = function (x) { return x * x; };
+    var odd = function (x) { return x % 2 == 1; };
+
+    // Think Unix pipes! `cat numbers | map sq | filter odd`
+    var oddSquares = _.chain(numbers).map(sq).filter(odd).value();
+    console.log(oddSquares); // => [1, 9]
+
+    // This is the same as
+    var squares = _.map(numbers, sq);    //=> [1, 4, 9]
+    var output = _.filter(squares, odd); //=> [1, 9]
+    // Or more succintly;
+    var output = _.filter(_.map(numbers, sq), odd);
+
+</section>
+</section>
+
+<section>
+<section data-markdown>
+# Array Functions
+
+</section>
+
+<section data-markdown>
+
+### Basics
+
+    // The classics
+    // _.map(arr, fn), _.filter(arr, fn), _.reduce(arr, fn)
+
+    // Accesssors
+    console.log(   _.first([1, 2, 3, 4]));  //=> 1
+    console.log(    _.last([1, 2, 3, 4]));  //=> 4
+    console.log( _.initial([1, 2, 3, 4]));  //=> [1, 2, 3]
+    console.log(    _.rest([1, 2, 3, 4]));  //=> [2, 3, 4]
+
+    // Math
+    console.log(_.min([1, 2, 3, 4])); //=> 1
+    console.log(_.max([1, 2, 3, 4])); //=> 4
+
+</section>
+
+<section data-markdown>
+
+### Logic Operators
+
+    var data1 = [1, 2, -3, 4, -6];
+    var data2 = [1, 2, 3, 4];
+
+    // Is any number negative?
+    _.any(data1, function (num) { return num < 0; }); //=> true
+    _.any(data2, function (num) { return num < 0; }); //=> false
+
+    // Are all numbers positive?
+    _.all(data1, function (num) { return num > 0; }); // false
+    _.all(data2, function (num) { return num > 0; }); // true
+
+</section>
+<section data-markdown>
+### Set Operations
+
+    // Set Operations
+    var set1 = [1, 2, 3, 4];
+    var set2 = [3, 4, 5];
+
+    _.union(set1, set2); //=> [1, 2, 3, 4, 5]
+
+    _.intersection(set1, set2); //=> [3, 4]
+
+    _.difference(set1, set2); //=> [1, 2]
+    _.difference(set2, set1); //=> [5]
+
+</section>
+
+<section data-markdown>
+### Utilities
+
+    // Membership
+    _.contains([1, 2, 3], 2); //=> true
+    _.indexOf([1, 2, 3], 2); //=> 1
+
+    // Manipulation & Sanitization
+    _.flatten([1, [2, 3, [4, 5]]]); //=> [1,2,3,4,5]
+    _.compact([1, null, 2, '', 3]); //=> [1,2,3]
+    _.clone([1, 2, 3]);             //=> [1,2,3]
+
+    // Searching
+    _.find(objects, function (o) { return o.id == 42; });
+    // Same as
+    var i = _.indexOf(objects, function (o) { return o.id == 42; });
+    listOfObjects[index];
+</section>
+
+<section data-markdown>
+### For Arrays of Objects
+
+    var fields = [
+      { label: 'name'     , type: 'text'   },
+      { label: 'age'      , type: 'number' },
+      { label: 'location' , type: 'text'   }
+    ];
+
+    _.pluck(fields, 'label'); //=> ['name', 'age', 'location']
+    _.uniq(_.pluck(fields, 'type')); //=> ['text', 'number']
+
+    _.pluck(['some', 'textual', 'data'], 'length');
+    //=> [4, 7, 4]
+
+    _.invoke(['some', 'textual', 'data'], 'toUpperCase');
+    //=> ["SOME", "TEXTUAL", "DATA"]
+</section>
+</section>
+
+<section>
+<section data-markdown>
+# Object Functions
+</section>
+
+<section data-markdown>
+## Accessors
+
+    var obj = { label: 'name', type: 'text' };
+
+    // Keys & Values
+    _.keys(obj);   //=> ['label', 'type']
+    _.values(obj); //=> ['name', 'text']
+
+</section>
+<section data-markdown>
+## Transformations
+
+    // Transform to array of [key, value] items
+    var pairs = _.pairs(obj);
+    //=> [['label', 'name'], ['type', 'text']]
+
+    // Transform back to object
+    var newObj = _.object(pairs);
+    // { label: 'name', type: 'text' }
+
+    // JS doesn't do object comparison
+    obj == newObj; // false
+    // But Underscore provides a deep equality checker
+    _.isEqual(obj, newObj); // true
+
+</section>
+
+<section data-markdown>
+### Object Initialization
+
+    var defaultValues = { delay: 50, duration: 500 };
+    var arguments = { easing: 'ease-in', delay: 100 };
+
+    /* Defaults will copy properties if they are not already set */
+    _.defaults(arguments, defaultValues);
+    //=> { easing: 'ease-in', 'delay': 100, duration: 500 }
+
+    /* Extend will copy properties always */
+    _.extend(arguments, defaultValues);
+    //=> { easing: 'ease-in', 'delay': 50, duration: 500 }
+
+</section>
+</section>
+
+<section>
+<section data-markdown>
+# Function functions
+</section>
+
+<section data-markdown>
+### Timing functions
+
+    // Just a shorthand for window.setTimeout
+    _.delay(function () { }, time);
+    // Just a shorthand for window.setTimeout(fn, 0)
+    _.defer(function () { });
+
+    // Ensure that fn is only called once in given time period
+    // Very useful when handling scroll events, etc
+    var fn = _.debounce(function () { }, time);
+    var fn = _.throttle(function () { }, time);
+    // debounce: delay, fn call, delay, fn call
+    // throttle: fn call, delay, fn call, delay
+
+</section>
+<section data-markdown>
+### Limiting Invocation
+
+    // Ensure that fn is only called once.
+    // Good for application initialization, etc
+    var fn = function () { console.log('initializing!'); }
+    fn = _.once(fn);
+
+    fn(); //=> 'initializing!';
+    fn(); //=> no op
+    fn(); //=> no op
+</section>
+</section>
+
+<section data-markdown>
+# And Done!
+</section>
+
+<section data-markdown data-background="#793">
+# Questions / Comments
+</section>
+
+<section data-markdown>
+# Thank You!
+
+### These Slides are available at [TODO]()
+### Reach out to me at [@_anks]("https://twitter.com/_anks")
+
+</section>
+
+</div>
+
+</div>
+
+<textarea id="hidden-textarea" style="position: absolute; left: -5000px; top: -5000px;"></textarea>
+
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/reveal.js/lib/js/head.min.js"></script>
+    <script src="bower_components/reveal.js/js/reveal.min.js"></script>
+    <script>
+      // Configure Reveal
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: 'linear', // default/cube/page/concave/zoom/linear/fade/none,
+        backgroundTransition: 'default',
+
+        keyboard: {
+          27: function() {}
+        },
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'bower_components/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'bower_components/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'bower_components/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'bower_components/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'js/loadhtmlslides.js', condition: function() { return !!document.querySelector( '[data-html]' ); } }
+        ]
+      });
+
+      var getCurrentSlidesCode = function () {
+          var codeBlocks = Reveal.getCurrentSlide().querySelectorAll('pre');
+          if (!codeBlocks.length) null;
+          var selection = window.getSelection();
+          if (!selection.isCollapsed) {
+            var range = selection.getRangeAt(0);
+            var contents = range.cloneContents().textContent;
+            if (contents) {
+              return contents;
+            }
+          }
+
+          return _.pluck(codeBlocks, 'innerText').join('\n');
+      };
+
+      var copyCode = function () {
+        var code = getCurrentSlidesCode();
+        if (!code) return true;
+
+        var textArea = document.querySelector('#hidden-textarea');
+        textArea.value = code;
+        textArea.focus();
+        textArea.select();
+        _.delay(function () { textArea.blur(); }, 10);
+      };
+
+      var executeCode = function () {
+        var code = getCurrentSlidesCode();
+        if (!code) return;
+        window.eval(code);
+      };
+
+      var revertCode = function () {
+        var block = Reveal.getCurrentSlide().querySelector('pre');
+        if (!block) return;
+        var codeElement = block.querySelector('code');
+        codeElement.innerText = originalCodes[block.id];
+	    hljs.highlightBlock(codeElement);
+      };
+
+      document.body.addEventListener('keydown', function (e) {
+        if ((e.ctrlKey || e.metaKey) && e.keyCode == 67) {
+          // Copy Code on Ctrl-C
+          copyCode();
+        } else if ((e.ctrlKey || e.metaKey) && e.keyCode == 69) {
+          // Execute code on Ctrl-E
+          executeCode();
+        } else if ((e.ctrlKey || e.metaKey) && e.keyCode == 90) {
+          // Revert code to original state on ctrl-z
+          revertCode();
+        }
+        return true;
+      });
+
+      var originalCodes = {};
+      Reveal.addEventListener('ready', function(event) {
+        var codeBlocks = document.querySelectorAll('pre');
+        _.each(codeBlocks, function (block) {
+          var id = _.uniqueId('code');
+          block.setAttribute('id', id);
+          originalCodes[id] = block.innerText;
+          block.contentEditable = true;
+        });
+      } );
+
+    </script>
+
+  </body>
 
 </html>

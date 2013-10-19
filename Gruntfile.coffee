@@ -9,18 +9,9 @@ module.exports = (grunt) ->
                 options:
                     livereload: true
                 files: [
-                    'index.html',
-                    'slides/*.md',
-                    'slides/*.html',
+                    'index.html'
                     'js/*.js'
                 ]
-
-            index:
-                files: [
-                    'index.tpl',
-                    'slides/list.json'
-                ]
-                tasks: ['build:index']
 
             coffeelint:
                 files: ['Gruntfile.coffee']
@@ -60,19 +51,8 @@ module.exports = (grunt) ->
     # Load all grunt tasks.
     require('load-grunt-tasks')(grunt)
 
-    grunt.registerTask 'build:index',
-        'Build index.html from index.tpl and slides/list.json.',
-        ->
-            template = grunt.file.read 'index.tpl'
-            slides = grunt.file.readJSON 'slides/list.json'
-            html = grunt.template.process template, data:
-                slides:
-                    slides
-            grunt.file.write 'index.html', html
-
     grunt.registerTask 'server',
         'Run presentation locally and start watch process (living document).', [
-            'build:index',
             'connect:livereload',
             'watch'
         ]
@@ -81,7 +61,6 @@ module.exports = (grunt) ->
     grunt.registerTask 'default', [
         'coffeelint',
         'jshint',
-        'build:index',
         'connect:livereload',
         'watch'
     ]
