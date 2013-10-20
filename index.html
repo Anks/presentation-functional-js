@@ -85,6 +85,7 @@
 #### 1. Function contexts & _this_
 #### 2. Prototypes & Inheritance
 #### 3. Closures & Recursion
+#### 4. Partial application & Function Composition
 
 #### (maybe next time?)
 </section>
@@ -597,6 +598,9 @@ What happens if you remove the _var_ keyword?
     // Same as
     var i = _.indexOf(objects, function (o) { return o.id == 42; });
     listOfObjects[index];
+
+    // Unique values
+    _.uniq([1, 3, 2, 3, 4, 4]); //=> [1, 3, 2, 4]
 </section>
 
 <section data-markdown>
@@ -702,6 +706,7 @@ What happens if you remove the _var_ keyword?
     fn(); //=> no op
     fn(); //=> no op
 </section>
+
 </section>
 
 <section data-markdown>
@@ -710,6 +715,15 @@ What happens if you remove the _var_ keyword?
 
 <section data-markdown data-background="#793">
 # Questions / Comments
+</section>
+
+<section data-markdown>
+### You might also like…
+
+#### [Underscore.contrib](https://github.com/documentcloud/underscore-contrib) — many more functions
+
+#### [lodash](https://github.com/lodash/lodash) — a faster Underscore.js
+
 </section>
 
 <section data-markdown>
